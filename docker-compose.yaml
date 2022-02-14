@@ -8,7 +8,7 @@ services:
    build: 
       context: ./CQPweb
    ports:
-       - 8080:80
+       - 80:${PORT:-80}
    volumes:
        - ${CORPORA}:/var/corpora
        - ${REGISTRY}:/usr/local/share/cwb/registry
