@@ -38,7 +38,7 @@ RUN grep -E '^VERSION = ' cwb/definitions.mk | cut -c11- > cwb.version
 # http://svn.code.sf.net/p/cwb/code/cwb/trunk/install-scripts/cwb-install-ubuntu
 RUN apt-get update \
     && apt-get install \
-        autoconf bison flex gcc make pkg-config libc6-dev libncurses5 libncurses5-dev libpcre3-dev libglib2.0-0 libglib2.0-dev libreadline-dev perl perl-modules libhtml-parser-perl
+        autoconf bison flex gcc make pkg-config libc6-dev libncurses5 libncurses5-dev libpcre3-dev libglib2.0-0 libglib2.0-dev libreadline-dev perl libhtml-parser-perl
 
 WORKDIR /usr/local/src/cwb
 ENV PLATFORM=linux-64
