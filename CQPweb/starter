@@ -26,15 +26,15 @@ cat <<EOF >/var/www/html/CQPweb/lib/config.inc.php
  * by | with no stray whitespace.      *
  * ----------------------------------- */
 
-\$superuser_username = '${CQPWEB_ADMIN}';
+\$superuser_username = '${CQPWEB_ADMINS}';
 
 
 /* -------------------------- *
  * database connection config *
  * -------------------------- */
 
-\$mysql_webuser = 'root';
-\$mysql_webpass = '${MYSQL_ROOT_PASSWORD}';
+\$mysql_webuser = '${MYSQL_USER}';
+\$mysql_webpass = '${MYSQL_PASSWORD}';
 \$mysql_schema  = '${MYSQL_DATABASE}';
 \$mysql_server  = 'sql';
 
