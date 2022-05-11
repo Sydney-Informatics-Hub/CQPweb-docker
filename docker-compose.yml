@@ -1,10 +1,8 @@
-version: "2"
+version: "3"
 services:
   cqpweb:
    image: rahonabe/cqpweb
-   env_file: ./secrets.env
-   domainname: ${DOMAINNAME}
-   hostname: ${FIRSTNAME}-CQPweb
+   hostname: CQPweb
    build: 
       context: ./CQPweb
    ports:
@@ -12,15 +10,20 @@ services:
    volumes:
        - ${CORPORA}:/var/corpora
        - ${REGISTRY}:/usr/local/share/cwb/registry
-       - ./${FIRSTNAME}-container/cqpweb/upload:/var/cqpweb/upload
-       - ./${FIRSTNAME}-container/cqpweb/data:/var/www/html
-       - ./${FIRSTNAME}-container/cqpweb/tmp:/var/cqpweb/tmp
+       - ./volumes/cqpweb/upload:/var/cqpweb/upload
+       - ./volumes/cqpweb/data:/var/www/html
+       - ./volumes/cqpweb/tmp:/var/cqpweb/tmp
+       - ./migration:/var/migration
+
   sql:
     image: mariadb
-    env_file: ./secrets.env
-    domainname: ${DOMAINNAME}
-    hostname: ${FIRSTNAME}-sql
+    hostname: sql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./${FIRSTNAME}-container/sql/data:/var/lib/mysql
+      - ./volumes/sql/data:/var/lib/mysql
     volumes_from:
         - cqpweb

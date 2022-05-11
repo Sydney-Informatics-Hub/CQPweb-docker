@@ -68,10 +68,13 @@ RUN perl Makefile.PL \
     && make install
 
 #Install CQPweb
-WORKDIR /usr/local/src
+WORKDIR /var/www/html
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
 
-# Tiny helper to start apache2 in foreground
-COPY starter /usr/local/bin/
+RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
+# RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/cqpweb
 
-CMD ["starter"]
+# helper to start apache2 in foreground
+COPY start_apache.sh /usr/local/bin/
+
+CMD ["start_apache.sh"]
