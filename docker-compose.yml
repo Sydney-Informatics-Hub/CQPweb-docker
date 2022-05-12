@@ -10,17 +10,20 @@ services:
       - APACHE_PID_FILE=${APACHE_PID_FILE}
       - APACHE_RUN_DIR=${APACHE_RUN_DIR}
       - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - CQPWEB_ADMIN=${CQPWEB_ADMIN}
     build: 
       context: ./CQPweb
+      args:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - CQPWEB_ADMIN=${CQPWEB_ADMIN}
+        - APACHE_RUN_USER=${APACHE_RUN_USER}
+        - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
     ports:
        - 8080:80
     volumes:
-       - corpora:/var/corpora
-       - registry:/usr/local/share/cwb/registry
+       - ${CORPORA}:/var/corpora
+       - ${REGISTRY}:/usr/local/share/cwb/registry
        - upload:/var/cqpweb/upload
        - tmp:/var/cqpweb/tmp
   sql:
