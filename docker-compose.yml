@@ -1,20 +1,28 @@
 version: "3"
 services:
   cqpweb:
-   image: rahonabe/cqpweb
-   hostname: CQPweb
-   build: 
+    image: rahonabe/cqpweb
+    hostname: CQPweb
+    environment:
+      - APACHE_RUN_USER=${APACHE_RUN_USER}
+      - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
+      - APACHE_LOG_DIR=${APACHE_LOG_DIR}
+      - APACHE_PID_FILE=${APACHE_PID_FILE}
+      - APACHE_RUN_DIR=${APACHE_RUN_DIR}
+      - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - CQPWEB_ADMIN=${CQPWEB_ADMIN}
+    build: 
       context: ./CQPweb
-   ports:
+    ports:
        - 8080:80
-   volumes:
-       - ${CORPORA}:/var/corpora
-       - ${REGISTRY}:/usr/local/share/cwb/registry
-       - ./volumes/cqpweb/upload:/var/cqpweb/upload
-       - ./volumes/cqpweb/data:/var/www/html
-       - ./volumes/cqpweb/tmp:/var/cqpweb/tmp
-       - ./migration:/var/migration
-
+    volumes:
+       - corpora:/var/corpora
+       - registry:/usr/local/share/cwb/registry
+       - upload:/var/cqpweb/upload
+       - tmp:/var/cqpweb/tmp
   sql:
     image: mariadb
     hostname: sql
@@ -24,6 +32,19 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./volumes/sql/data:/var/lib/mysql
+      - mysql:/var/lib/mysql
     volumes_from:
         - cqpweb
+
+
+volumes:
+  corpora:
+    driver: local
+  registry:
+    driver: local
+  upload:
+    driver: local
+  tmp:
+    driver: local
+  mysql:
+    driver: local
