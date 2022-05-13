@@ -9,10 +9,14 @@ services:
       - APACHE_LOG_DIR=${APACHE_LOG_DIR}
       - APACHE_PID_FILE=${APACHE_PID_FILE}
       - APACHE_RUN_DIR=${APACHE_RUN_DIR}
+      - REGISTRY_VOL=${REGISTRY_VOL}
+      - WEB_ROOT=${WEB_ROOT}
       - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
     build: 
       context: ./CQPweb
       args:
+        - REGISTRY_VOL=${REGISTRY_VOL}
+        - WEB_ROOT=${WEB_ROOT}
         - MYSQL_DATABASE=${MYSQL_DATABASE}
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -22,10 +26,10 @@ services:
     ports:
        - 8080:80
     volumes:
-       - ${CORPORA}:/var/corpora
-       - ${REGISTRY}:/usr/local/share/cwb/registry
-       - upload:/var/cqpweb/upload
-       - tmp:/var/cqpweb/tmp
+       - ${CORPORA}:${CORPORA_VOL}
+       - ${REGISTRY}:${REGISTRY_VOL}
+       - upload:${UPLOAD_VOL}
+       - tmp:${TMP_VOL}/var/cqpweb/tmp
   sql:
     image: mariadb
     hostname: sql

@@ -14,6 +14,8 @@ FROM r-base:latest
 LABEL maintainer="Luigi <luigi@rahona.be>"
 ENV LANG C.UTF-8
 ARG CWB_REVISION=HEAD
+ARG REGISTRY_VOL
+ARG WEB_ROOT
 ARG MYSQL_DATABASE
 ARG MYSQL_USER
 ARG MYSQL_PASSWORD
@@ -78,7 +80,7 @@ RUN perl Makefile.PL \
     && make install
 
 #Install CQPweb
-WORKDIR /var/www/html
+WORKDIR ${WEB_ROOT}
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
 
 ENV MYSQL_DATABASE ${MYSQL_DATABASE}
@@ -91,10 +93,11 @@ ENV APACHE_LOG_DIR ${APACHE_LOG_DIR}
 ENV APACHE_PID_FILE ${APACHE_PID_FILE}
 ENV APACHE_RUN_DIR ${APACHE_RUN_DIR}
 ENV APACHE_LOCK_DIR ${APACHE_LOCK_DIR}
-
+ENV REGISTRY_VOL ${REGISTRY_VOL}
+ENV WEB_ROOT ${WEB_ROOT}
 COPY configure.sh /usr/local/bin/
 
-RUN sh /usr/local/bin/configure.sh
+RUN bash /usr/local/bin/configure.sh
 
 # helper to start apache2 in foreground
 COPY start_apache.sh /usr/local/bin/
