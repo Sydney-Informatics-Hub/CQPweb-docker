@@ -2,6 +2,48 @@
 
 set -e
 
+#write the CQPweb config
+
+cat <<EOF >/var/www/html/CQPweb/lib/config.inc.php
+<?php
+
+
+/* ----------------------------------- *
+ * adminstrators' usernames, separated *
+ * by | with no stray whitespace.      *
+ * ----------------------------------- */
+
+\$superuser_username = '${CQPWEB_ADMIN}';
+
+
+/* -------------------------- *
+ * database connection config *
+ * -------------------------- */
+
+\$mysql_webuser = '${MYSQL_USER}';
+\$mysql_webpass = '${MYSQL_PASSWORD}';
+\$mysql_schema  = '${MYSQL_DATABASE}';
+\$mysql_server  = 'sql';
+
+
+/* ---------------------- *
+ * server directory paths *
+ * ---------------------- */
+
+\$cqpweb_tempdir   = '/var/cqpweb/tmp';
+\$cqpweb_uploaddir = '/var/cqpweb/upload';
+\$cwb_datadir      = '/var/corpora';
+\$cwb_registry     = '/usr/local/share/cwb/registry';
+
+\$mysql_has_file_access = TRUE;
+
+?>
+
+EOF
+
+#put symlinks to the exe directory for each of the corpora installed in
+#the registry - this is how CQPweb does routing
+
 for regfile in ${REGISTRY_VOL}/*; do
 	target="${WEB_ROOT}/CQPweb/${regfile##*/}"
 	if ! [[ $regfile =~ __freq$ || -e $target ]]
@@ -11,6 +53,7 @@ for regfile in ${REGISTRY_VOL}/*; do
 	fi
 done 
 
+# ensure permissions are ok
 
 #/var/www/html, where CQPweb sits
 chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html

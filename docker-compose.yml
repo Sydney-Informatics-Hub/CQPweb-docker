@@ -12,17 +12,14 @@ services:
       - REGISTRY_VOL=${REGISTRY_VOL}
       - WEB_ROOT=${WEB_ROOT}
       - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - CQPWEB_ADMIN=${CQPWEB_ADMIN}
     build: 
       context: ./CQPweb
       args:
-        - REGISTRY_VOL=${REGISTRY_VOL}
         - WEB_ROOT=${WEB_ROOT}
-        - MYSQL_DATABASE=${MYSQL_DATABASE}
-        - MYSQL_USER=${MYSQL_USER}
-        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-        - CQPWEB_ADMIN=${CQPWEB_ADMIN}
-        - APACHE_RUN_USER=${APACHE_RUN_USER}
-        - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
     ports:
        - 8080:80
     volumes:

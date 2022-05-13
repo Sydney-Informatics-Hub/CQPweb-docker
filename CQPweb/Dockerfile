@@ -14,18 +14,7 @@ FROM r-base:latest
 LABEL maintainer="Luigi <luigi@rahona.be>"
 ENV LANG C.UTF-8
 ARG CWB_REVISION=HEAD
-ARG REGISTRY_VOL
-ARG WEB_ROOT
-ARG MYSQL_DATABASE
-ARG MYSQL_USER
-ARG MYSQL_PASSWORD
-ARG CQPWEB_ADMIN
-ARG APACHE_RUN_USER
-ARG APACHE_RUN_GROUP
-ARG APACHE_LOG_DIR
-ARG APACHE_PID_FILE
-ARG APACHE_RUN_DIR
-ARG APACHE_LOCK_DIR
+ARG WEB_ROOT=${WEB_ROOT}
 
 # Set APT::Get::Assume-Yes
 RUN echo 'APT { GET { Assume-Yes "true"; }; };' >> /etc/apt/apt.conf
@@ -80,26 +69,13 @@ RUN perl Makefile.PL \
     && make install
 
 #Install CQPweb
+
 WORKDIR ${WEB_ROOT}
+
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
 
-ENV MYSQL_DATABASE ${MYSQL_DATABASE}
-ENV MYSQL_USER ${MYSQL_USER}
-ENV MYSQL_PASSWORD ${MYSQL_PASSWORD}
-ENV CQPWEB_ADMIN ${CQPWEB_ADMIN}
-ENV APACHE_RUN_USER ${APACHE_RUN_USER}
-ENV APACHE_RUN_GROUP ${APACHE_RUN_GROUP}
-ENV APACHE_LOG_DIR ${APACHE_LOG_DIR}
-ENV APACHE_PID_FILE ${APACHE_PID_FILE}
-ENV APACHE_RUN_DIR ${APACHE_RUN_DIR}
-ENV APACHE_LOCK_DIR ${APACHE_LOCK_DIR}
-ENV REGISTRY_VOL ${REGISTRY_VOL}
-ENV WEB_ROOT ${WEB_ROOT}
-COPY configure.sh /usr/local/bin/
+# start_apache does some final setup and config, then runs the app
 
-RUN bash /usr/local/bin/configure.sh
-
-# helper to start apache2 in foreground
 COPY start_apache.sh /usr/local/bin/
 
 CMD ["start_apache.sh"]
