@@ -7,7 +7,12 @@
 FROM mariadb
 
 ARG APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
+ARG MYSQL_USER=${MYSQL_USER}
 
-RUN echo ${APACHE_RUN_GROUP}
+# make sure that the mysql daemon can write to www-data
 
 RUN usermod -aG ${APACHE_RUN_GROUP} mysql
+
+# make sure that the default db user can ingest files for the query cache
+
+RUN echo "GRANT FILE ON *.* TO '${MYSQL_USER}'@'%'" > /docker-entrypoint-initdb.d/grant_file_privilege.sql

@@ -35,6 +35,7 @@ services:
       context: ./MariaDB
       args:
         - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
+        - MYSQL_USER=${MYSQL_USER}
     hostname: sql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
