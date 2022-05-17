@@ -9,7 +9,10 @@ services:
       - APACHE_LOG_DIR=${APACHE_LOG_DIR}
       - APACHE_PID_FILE=${APACHE_PID_FILE}
       - APACHE_RUN_DIR=${APACHE_RUN_DIR}
+      - CORPORA_VOL=${CORPORA_VOL}
       - REGISTRY_VOL=${REGISTRY_VOL}
+      - UPLOAD_VOL=${UPLOAD_VOL}
+      - CACHE_VOL=${CACHE_VOL}
       - WEB_ROOT=${WEB_ROOT}
       - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -25,10 +28,13 @@ services:
     volumes:
        - ${CORPORA}:${CORPORA_VOL}
        - ${REGISTRY}:${REGISTRY_VOL}
-       - upload:${UPLOAD_VOL}
-       - tmp:${TMP_VOL}/var/cqpweb/tmp
+       - ${UPLOAD}:${UPLOAD_VOL}
+       - ${CACHE}:${CACHE_VOL}
   sql:
-    image: mariadb
+    build:
+      context: ./MariaDB
+      args:
+        - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
     hostname: sql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -37,18 +43,9 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
-    volumes_from:
-        - cqpweb
+      - ${CACHE}:${CACHE_VOL}
 
 
 volumes:
-  corpora:
-    driver: local
-  registry:
-    driver: local
-  upload:
-    driver: local
-  tmp:
-    driver: local
   mysql:
     driver: local

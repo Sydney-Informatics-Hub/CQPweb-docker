@@ -30,10 +30,12 @@ cat <<EOF >/var/www/html/CQPweb/lib/config.inc.php
  * server directory paths *
  * ---------------------- */
 
-\$cqpweb_tempdir   = '/var/cqpweb/tmp';
-\$cqpweb_uploaddir = '/var/cqpweb/upload';
-\$cwb_datadir      = '/var/corpora';
-\$cwb_registry     = '/usr/local/share/cwb/registry';
+\$cqpweb_tempdir   = '${CACHE_VOL};
+\$cqpweb_uploaddir = '${UPLOAD_VOL};
+\$cwb_datadir      = '${CORPORA_VOL}';
+\$cwb_registry     = '${REGISTRY_VOL}';
+
+
 
 \$mysql_has_file_access = TRUE;
 
@@ -55,11 +57,11 @@ done
 
 # ensure permissions are ok
 
-#/var/www/html, where CQPweb sits
-chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
-#/var/upload, where CQPweb upload file
-chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/cqpweb/upload
-chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/cqpweb/tmp
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${WEB_ROOT}
+
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${UPLOAD_VOL}
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${CACHE_VOL}
+chmod -R 775 ${CACHE_VOL}
 
 # Apache gets grumpy about PID files pre-existing
 rm -f ${APACHE_PID_FILE}
