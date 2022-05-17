@@ -4,7 +4,7 @@ set -e
 
 #write the CQPweb config
 
-cat <<EOF >/var/www/html/CQPweb/lib/config.inc.php
+cat <<EOF >${WEB_ROOT}/CQPweb/lib/config.inc.php
 <?php
 
 
@@ -30,8 +30,8 @@ cat <<EOF >/var/www/html/CQPweb/lib/config.inc.php
  * server directory paths *
  * ---------------------- */
 
-\$cqpweb_tempdir   = '${CACHE_VOL};
-\$cqpweb_uploaddir = '${UPLOAD_VOL};
+\$cqpweb_tempdir   = '${CACHE_VOL}';
+\$cqpweb_uploaddir = '${UPLOAD_VOL}';
 \$cwb_datadir      = '${CORPORA_VOL}';
 \$cwb_registry     = '${REGISTRY_VOL}';
 
