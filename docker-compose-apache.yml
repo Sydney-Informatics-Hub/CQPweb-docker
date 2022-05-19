@@ -1,5 +1,12 @@
 version: "3"
 services:
+  apache:
+    container_name: apache
+    build:
+      context: ./Apache
+    ports:
+      - 8080:80
+
   cqpweb:
     container_name: cqpweb
     environment:
@@ -23,12 +30,13 @@ services:
       args:
         - WEB_ROOT=${WEB_ROOT}
     ports:
-       - 8080:80
+       - 9000:80
     volumes:
        - ${CORPORA}:${CORPORA_VOL}
        - ${REGISTRY}:${REGISTRY_VOL}
        - ${UPLOAD}:${UPLOAD_VOL}
        - ${CACHE}:${CACHE_VOL}
+
   sql:
     container_name: mysql
     build:

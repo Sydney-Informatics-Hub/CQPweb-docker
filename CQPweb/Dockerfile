@@ -76,6 +76,8 @@ RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPw
 
 # start_apache does some final setup and config, then runs the app
 
+COPY Apache/apache2.conf /etc/apache2/apache2.conf
+
 COPY start_apache.sh /usr/local/bin/
 
 CMD ["start_apache.sh"]
