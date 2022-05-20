@@ -77,11 +77,13 @@ WORKDIR ${WEB_ROOT}
 
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
 
-# patches for bugs when running behind a proxy
+# patches for urls which don't end in a / - these break when running behind
+# a proxy
 
-COPY general-lib.php CQPweb/lib/
-COPY mainhome.php CQPweb/lib/
-COPY queryhome.php CQPweb/lib/
+COPY proxy-patch/html-lib.php CQPweb/lib/
+COPY proxy-patch/mainhome.php CQPweb/lib/
+COPY proxy-patch/queryhome.php CQPweb/lib/
+COPY proxy-patch/userhome.php CQPweb/lib/
 
 # start_apache does some final setup and config, then runs the app
 
