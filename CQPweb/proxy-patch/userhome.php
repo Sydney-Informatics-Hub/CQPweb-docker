@@ -109,7 +109,7 @@ if ($User->logged_in)
 		?>
 		<tr>
 			<td class="concordgeneral">
-				<a class="menuItem" href="../adm">Go to admin control panel</a>
+				<a class="menuItem" href="../adm/">Go to admin control panel</a>
 			</td>
 		</tr>
 		<?php

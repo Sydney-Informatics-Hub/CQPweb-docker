@@ -1,11 +1,5 @@
 version: "3"
 services:
-  apache:
-    container_name: apache
-    build:
-      context: ./Apache
-    ports:
-      - 8080:80
 
   cqpweb:
     container_name: cqpweb
@@ -25,14 +19,14 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - CQPWEB_ADMIN=${CQPWEB_ADMIN}
-      - CQPWEB_ROOT_URL=http://localhost:8080/cqpweb-test/CQPweb/
+      - CQPWEB_ROOT_URL=${CQPWEB_ROOT_URL}
     build: 
       context: ./CQPweb
       dockerfile: Dockerfile.proxy
       args:
         - WEB_ROOT=${WEB_ROOT}
     ports:
-       - 9000:80
+       - 8080:80
     volumes:
        - ${CORPORA}:${CORPORA_VOL}
        - ${REGISTRY}:${REGISTRY_VOL}
