@@ -35,7 +35,7 @@ cat <<EOF >${WEB_ROOT}/CQPweb/lib/config.inc.php
 \$cwb_datadir      = '${CORPORA_VOL}';
 \$cwb_registry     = '${REGISTRY_VOL}';
 
-
+\$cqpweb_root_url  = '${CQPWEB_ROOT_URL}';
 
 \$mysql_has_file_access = TRUE;
 
