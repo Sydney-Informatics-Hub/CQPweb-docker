@@ -25,6 +25,9 @@ services:
       dockerfile: Dockerfile.proxy
       args:
         - WEB_ROOT=${WEB_ROOT}
+    restart: always
+    logging:
+      driver: "json-file"
     ports:
        - 8080:80
     volumes:
@@ -40,7 +43,10 @@ services:
       args:
         - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
         - MYSQL_USER=${MYSQL_USER}
+    restart: always
     hostname: sql
+    logging:
+      driver: "json-file"
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
