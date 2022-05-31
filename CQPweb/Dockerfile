@@ -90,6 +90,7 @@ COPY ssmtp/ssmtp.conf /etc/ssmtp/
 # start_apache does some final setup and config, then runs the app
 
 COPY Apache/apache2.conf /etc/apache2/apache2.conf
+COPY Apache/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
 COPY start_apache.sh /usr/local/bin/
 
