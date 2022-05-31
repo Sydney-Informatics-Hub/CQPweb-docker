@@ -8,7 +8,7 @@
 ##############################################################################
 
 # Dockerfile version which patches in some fixes for bugs which affect
-# CQPweb's ability to run property behind a proxy
+# CQPweb's ability to run properly behind a proxy
 
 
 ##############################################################################
@@ -47,7 +47,8 @@ RUN apt-get update \
 	php-json \
 	php-gd \
 	less \
-	mysql-client
+	mysql-client \
+	ssmtp
 
 
 # Get source
@@ -80,10 +81,11 @@ RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPw
 # patches for urls which don't end in a / - these break when running behind
 # a proxy
 
-COPY proxy-patch/html-lib.php CQPweb/lib/
-COPY proxy-patch/mainhome.php CQPweb/lib/
-COPY proxy-patch/queryhome.php CQPweb/lib/
-COPY proxy-patch/userhome.php CQPweb/lib/
+COPY proxy-patch/* CQPweb/lib/
+
+# ssmtp config to relay emails to Postfix on the host
+
+COPY ssmtp/ssmtp.conf /etc/ssmtp/
 
 # start_apache does some final setup and config, then runs the app
 

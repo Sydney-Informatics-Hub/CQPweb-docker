@@ -44,7 +44,8 @@ RUN apt-get update \
 	php-json \
 	php-gd \
 	less \
-	mysql-client
+	mysql-client \
+    ssmtp
 
 
 # Get source
@@ -65,14 +66,18 @@ RUN svn co http://svn.code.sf.net/p/cwb/code/perl/trunk/CWB CWB-perl
 WORKDIR /usr/local/src/CWB-perl
 RUN perl Makefile.PL \
     && make \
-    && make test \
-    && make install
+   && make test \
+   && make install
 
 #Install CQPweb
 
 WORKDIR ${WEB_ROOT}
 
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
+
+# ssmtp config to relay emails to Postfix on the host
+
+COPY ssmtp/ssmtp.conf /etc/ssmtp/
 
 # start_apache does some final setup and config, then runs the app
 
