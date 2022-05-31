@@ -59,6 +59,8 @@ ENV PLATFORM=linux-64
 ENV SITE=binary-release
 RUN install-scripts/install-linux
 
+ENV LD_LIBRARY_PATH=/usr/local/lib
+
 #Cwb perl
 WORKDIR /usr/local/src
 RUN svn co http://svn.code.sf.net/p/cwb/code/perl/trunk/CWB CWB-perl
@@ -76,6 +78,12 @@ WORKDIR ${WEB_ROOT}
 RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPweb
 
 # ssmtp config to relay emails to Postfix on the host
+
+# patches for urls which don't end in a / - these break when running behind
+# a proxy
+
+COPY proxy-patch/* CQPweb/lib/
+
 
 COPY ssmtp/ssmtp.conf /etc/ssmtp/
 

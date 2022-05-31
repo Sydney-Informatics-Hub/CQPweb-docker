@@ -1,0 +1,66 @@
+version: "3"
+services:
+  cqpweb:
+    container_name: cqpweb
+    environment:
+      - APACHE_RUN_USER=${APACHE_RUN_USER}
+      - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
+      - APACHE_LOG_DIR=${APACHE_LOG_DIR}
+      - APACHE_PID_FILE=${APACHE_PID_FILE}
+      - APACHE_RUN_DIR=${APACHE_RUN_DIR}
+      - CORPORA_VOL=${CORPORA_VOL}
+      - REGISTRY_VOL=${REGISTRY_VOL}
+      - UPLOAD_VOL=${UPLOAD_VOL}
+      - CACHE_VOL=${CACHE_VOL}
+      - WEB_ROOT=${WEB_ROOT}
+      - APACHE_LOCK_DIR=${APACHE_LOCK_DIR}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - CQPWEB_ROOT_URL=${CQPWEB_ROOT_URL}
+      - CQPWEB_ADMIN=${CQPWEB_ADMIN}
+    build: 
+      context: ./CQPweb
+      args:
+        - WEB_ROOT=${WEB_ROOT}
+    ports:
+       - 80:80
+    volumes:
+       - ${CORPORA}:${CORPORA_VOL}
+       - ${REGISTRY}:${REGISTRY_VOL}
+       - ${UPLOAD}:${UPLOAD_VOL}
+       - ${CACHE}:${CACHE_VOL}
+    networks:
+       - cqpweb
+
+  sql:
+    container_name: mysql
+    build:
+      context: ./MariaDB
+      args:
+        - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
+        - MYSQL_USER=${MYSQL_USER}
+    hostname: sql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+      - ${CACHE}:${CACHE_VOL}
+    networks:
+      - cqpweb
+
+networks:
+  cqpweb:
+    driver: bridge
+    # ipam:
+    #   driver: default
+    #   config:
+    #     - subnet: 172.22.0.0/16
+    #     - gateway: 127.22.0.1
+
+volumes:
+  mysql:
+    driver: local
