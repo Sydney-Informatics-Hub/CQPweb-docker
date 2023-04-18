@@ -23,6 +23,7 @@ services:
       context: ./CQPweb
       args:
         - WEB_ROOT=${WEB_ROOT}
+    restart: always
     ports:
        - 80:80
     volumes:
@@ -40,6 +41,7 @@ services:
       args:
         - APACHE_RUN_GROUP=${APACHE_RUN_GROUP}
         - MYSQL_USER=${MYSQL_USER}
+    restart: always
     hostname: sql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -55,11 +57,10 @@ services:
 networks:
   cqpweb:
     driver: bridge
-    # ipam:
-    #   driver: default
-    #   config:
-    #     - subnet: 172.22.0.0/16
-    #     - gateway: 127.22.0.1
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.0.0/16
 
 volumes:
   mysql:
