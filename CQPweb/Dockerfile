@@ -56,7 +56,7 @@ RUN tar -xzvf cwb.tar.gz
 RUN ln -s cwb-* cwb
 WORKDIR /usr/local/src/cwb
 ENV PLATFORM=linux-64
-ENV SITE=binary-release
+ENV SITE=standard
 RUN install-scripts/install-linux
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
