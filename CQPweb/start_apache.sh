@@ -61,6 +61,8 @@ chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${WEB_ROOT}
 
 chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${UPLOAD_VOL}
 chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${CACHE_VOL}
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${CORPORA_VOL}
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${REGISTRY_VOL}
 chmod -R 775 ${CACHE_VOL}
 
 # Apache gets grumpy about PID files pre-existing

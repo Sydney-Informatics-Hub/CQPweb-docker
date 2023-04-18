@@ -56,7 +56,7 @@ RUN tar -xzvf cwb.tar.gz
 RUN ln -s cwb-* cwb
 WORKDIR /usr/local/src/cwb
 ENV PLATFORM=linux-64
-ENV SITE=binary-release
+ENV SITE=standard
 RUN install-scripts/install-linux
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
@@ -84,8 +84,16 @@ RUN svn co http://svn.code.sf.net/p/cwb/code/gui/cqpweb/branches/3.2-latest CQPw
 
 COPY proxy-patch/* CQPweb/lib/
 
+# patch for the install-corpus.php script (which is broken) and additional
+# install-metadata.php script
+
+COPY installers/* CQPweb/bin/ 
 
 COPY ssmtp/ssmtp.conf /etc/ssmtp/
+
+# patch to add reminders about verification emails getting stuck in spam
+
+COPY spam-message/* CQPweb/lib/
 
 # start_apache does some final setup and config, then runs the app
 
